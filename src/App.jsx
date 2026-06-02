@@ -36,7 +36,7 @@ function App() {
       <h1>Shopping App</h1>
 
       <button onClick={toggleDarkMode}>
-        {isDarkMode ? 'Light' : 'Dark'}
+        {isDarkMode ? 'Dark' : 'Light'}
       </button>
 
       <div>
@@ -54,14 +54,18 @@ function App() {
         </select>
       </div>
 
-      <ul>
-        {filteredProducts.map((product) => (
-          <li key={product.id}>
-            <span>{product.name}</span>
-            <button onClick={() => addToCart(product.name)}>Add to Cart</button>
-          </li>
-        ))}
-      </ul>
+      {filteredProducts.length === 0 ? (
+        <p>No products available.</p>
+      ) : (
+        <ul>
+          {filteredProducts.map((product) => (
+            <li key={product.id}>
+              <span>{product.name}</span>
+              <button onClick={() => addToCart(product.name)}>Add to Cart</button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div>
         <h2>Cart</h2>

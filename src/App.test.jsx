@@ -1,26 +1,25 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
 import App from './App'
 
 describe('Dark Mode Toggle', () => {
-  it('renders the dark mode button with initial text "Dark"', () => {
+  it('renders the dark mode button with initial text "Light"', () => {
     render(<App />)
-    expect(screen.getByText('Dark')).toBeInTheDocument()
-  })
-
-  it('changes button text to "Light" after clicking', () => {
-    render(<App />)
-    const button = screen.getByText('Dark')
-    fireEvent.click(button)
     expect(screen.getByText('Light')).toBeInTheDocument()
   })
 
-  it('toggles back to "Dark" after clicking twice', () => {
+  it('changes button text to "Dark" after clicking', () => {
     render(<App />)
-    const button = screen.getByText('Dark')
+    const button = screen.getByText('Light')
     fireEvent.click(button)
-    fireEvent.click(screen.getByText('Light'))
     expect(screen.getByText('Dark')).toBeInTheDocument()
+  })
+
+  it('toggles back to "Light" after clicking twice', () => {
+    render(<App />)
+    const button = screen.getByText('Light')
+    fireEvent.click(button)
+    fireEvent.click(screen.getByText('Dark'))
+    expect(screen.getByText('Light')).toBeInTheDocument()
   })
 })
 
@@ -76,5 +75,12 @@ describe('Category Filter', () => {
     expect(screen.getByText('Apples')).toBeInTheDocument()
     expect(screen.getByText('Bananas')).toBeInTheDocument()
     expect(screen.queryByText('Milk')).not.toBeInTheDocument()
+  })
+
+  it('shows "No products available." when no products match', () => {
+    render(<App />)
+    const select = screen.getByLabelText('Filter by category:')
+    fireEvent.change(select, { target: { value: 'NonExistent' } })
+    expect(screen.getByText('No products available.')).toBeInTheDocument()
   })
 })
